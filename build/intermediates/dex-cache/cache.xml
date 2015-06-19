@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\Users\Jacopo\AndroidStudioProjects\ArDroidFollowUp\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\19.1.0\jars\classes.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="3499ceba05ca1f6037c6a2fad73df8f636224a28">
+        <dex dex="C:\Users\Jacopo\AndroidStudioProjects\ArDroidFollowUp\app\build\intermediates\pre-dexed\debug\classes-ea0eaf430794df082daaf204b63af57d2134a78b.jar" />
+    </item>
+    <item
+        jar="C:\Users\Jacopo\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-v4\19.1.0\support-v4-19.1.0.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67">
+        <dex dex="C:\Users\Jacopo\AndroidStudioProjects\ArDroidFollowUp\app\build\intermediates\pre-dexed\debug\support-v4-19.1.0-ed2b4ae61bf3ce6f9a8398fdf69e426d4c3267ef.jar" />
+    </item>
+    <item
+        jar="C:\Users\Jacopo\AndroidStudioProjects\ArDroidFollowUp\app\build\intermediates\exploded-aar\ArDroidFollowUp\OpenCV\unspecified\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="0bc0e84d6f90e57a1fa721bf289ab9b6407ce1ef">
+        <dex dex="C:\Users\Jacopo\AndroidStudioProjects\ArDroidFollowUp\app\build\intermediates\pre-dexed\debug\classes-f10e016bfc1c5e8b857bb5fc7d933be3b77e04e6.jar" />
+    </item>
+    <item
+        jar="C:\Users\Jacopo\AndroidStudioProjects\ArDroidFollowUp\app\build\intermediates\exploded-aar\ArDroidFollowUp\OpenCV\unspecified\jars\classes.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="d7fb84d3b72ddb5b7f5f9965bc7ef71e9db721d3">
+        <dex dex="C:\Users\Jacopo\AndroidStudioProjects\ArDroidFollowUp\app\build\intermediates\pre-dexed\debug\classes-f10e016bfc1c5e8b857bb5fc7d933be3b77e04e6.jar" />
+    </item>
+
+</items>
