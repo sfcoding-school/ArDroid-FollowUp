@@ -73,9 +73,11 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
             }
         }
     };
+    private boolean useFD = false;
     private String currState = "null";
     private Mat mRgba;
     private FeatureScanner featureScanner;
+    private CascadeFinder cascadeFinder;
 
     @Override
     public void onPause() {
@@ -121,6 +123,7 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         featureScanner = new FeatureScanner(this.getApplicationContext());
+        cascadeFinder = new CascadeFinder(this.getApplicationContext());
 
         mUsbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
         mPermissionIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_USB_PERMISSION), 0);
@@ -131,6 +134,7 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
         setContentView(R.layout.activity_main);
 
         mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.cameraSurface);
+        //mOpenCvCameraView.setMaxFrameSize(1024, 768);
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
         mOpenCvCameraView.setCvCameraViewListener(this);
     }
@@ -161,7 +165,11 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
         mRgba = inputFrame.rgba();
 
-        String newState = featureScanner.doTheWork(mRgba);
+        String newState;
+        if (useFD)
+            newState = featureScanner.doTheWork(mRgba);
+        else
+            newState = cascadeFinder.doTheWork(mRgba);
 
         if (!newState.equals(currState)) {
             currState = newState;

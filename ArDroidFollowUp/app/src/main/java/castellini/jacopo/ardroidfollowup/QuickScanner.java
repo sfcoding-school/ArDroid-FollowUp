@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FeatureScanner {
+public class QuickScanner {
 
     private Mat mImage;
     private Mat cornersImage;
@@ -36,7 +36,7 @@ public class FeatureScanner {
     private DescriptorExtractor descriptorExtractor;
     private DescriptorMatcher descriptorMatcher;
 
-    public FeatureScanner(Context ctx) {
+    public QuickScanner(Context ctx) {
         try {
             mImage = Utils.loadResource(ctx, R.drawable.unipg);
             Imgproc.cvtColor(mImage, mImage, Imgproc.COLOR_RGBA2GRAY);
@@ -47,12 +47,12 @@ public class FeatureScanner {
 
         keypointsImage = new MatOfKeyPoint();
 
-        featureDetector = FeatureDetector.create(FeatureDetector.ORB);
+        featureDetector = FeatureDetector.create(FeatureDetector.BRISK);
         featureDetector.detect(mImage, keypointsImage);
 
         descriptorsImage = new Mat();
 
-        descriptorExtractor = DescriptorExtractor.create(DescriptorExtractor.ORB);
+        descriptorExtractor = DescriptorExtractor.create(DescriptorExtractor.FREAK);
         descriptorExtractor.compute(mImage, keypointsImage, descriptorsImage);
 
         descriptorMatcher = DescriptorMatcher.create(DescriptorMatcher.BRUTEFORCE_HAMMING);
@@ -75,29 +75,44 @@ public class FeatureScanner {
         descriptorExtractor.compute(mGray, frameKeypoints, frameDescriptors);
 
         if (keypointsImage.size().height >= 2 && frameKeypoints.size().height >= 2) {
-            ArrayList<MatOfDMatch> matches = new ArrayList<MatOfDMatch>();
-            descriptorMatcher.knnMatch(descriptorsImage, frameDescriptors, matches, 2);
+            MatOfDMatch matches = new MatOfDMatch();
+            descriptorMatcher.match(frameDescriptors, descriptorsImage, matches);
 
-            ArrayList<List<DMatch>> matchesList = new ArrayList<List<DMatch>>();
-            for (MatOfDMatch dm : matches)
-                matchesList.add(dm.toList());
+            List<DMatch> matchesList = matches.toList();
 
-            ArrayList<DMatch> goodMatches = new ArrayList<DMatch>();
+            if (matchesList.size() >= 4) {
 
-            for (int i = 0; i < Math.min(frameDescriptors.rows() - 1, matches.size()); i++) {
-                if (matchesList.get(i).get(0).distance < 0.7 * matchesList.get(i).get(1).distance)
-                    goodMatches.add(matchesList.get(i).get(0));
-            }
+                List<KeyPoint> objList = keypointsImage.toList();
+                List<KeyPoint> frameList = frameKeypoints.toList();
 
-            List<KeyPoint> objList = keypointsImage.toList();
-            List<KeyPoint> frameList = frameKeypoints.toList();
-            ArrayList<Point> objAux = new ArrayList<Point>();
-            ArrayList<Point> frameAux = new ArrayList<Point>();
+                double maxDist = Double.MIN_VALUE;
+                double minDist = Double.MAX_VALUE;
+                for (DMatch match : matchesList) {
+                    double dist = match.distance;
+                    if (dist < minDist) {
+                        minDist = dist;
+                    }
+                    if (dist > maxDist) {
+                        maxDist = dist;
+                    }
+                }
+                if (minDist > 40.0) {
+                    return "stop";
+                }
 
-            if (goodMatches.size() >= 8) {
-                for (int i = 0; i < goodMatches.size(); i++) {
-                    objAux.add(objList.get(goodMatches.get(i).queryIdx).pt);
-                    frameAux.add(frameList.get(goodMatches.get(i).trainIdx).pt);
+                ArrayList<Point> objAux = new ArrayList<Point>();
+                ArrayList<Point> frameAux = new ArrayList<Point>();
+
+                double maxGoodMatchDist = 1.75 * minDist;
+                for (DMatch match : matchesList) {
+                    if (match.distance < maxGoodMatchDist) {
+                        objAux.add(objList.get(match.trainIdx).pt);
+                        frameAux.add(frameList.get(match.queryIdx).pt);
+                    }
+                }
+
+                if (objAux.size() < 4 || frameAux.size() < 4) {
+                    return "stop";
                 }
 
                 MatOfPoint2f objMat = new MatOfPoint2f();
@@ -132,19 +147,19 @@ public class FeatureScanner {
                         minY = (int) temp.y;
                 }
 
-                double frameSize = mGray.size().width;
+                Size frameSize = mGray.size();
                 Rect rect = new Rect(new Point(minX, minY), new Point(maxX, maxY));
 
                 Core.rectangle(mRgba, rect.tl(), rect.br(), new Scalar(255, 0, 0), 3);
 
-                if (rect.tl().x + rect.width / 2 < frameSize / 3)
+                if (rect.tl().x + rect.width / 2 < frameSize.width / 3)
                     return "left";
-                else if (rect.tl().x + rect.width / 2 > 2 * frameSize / 3)
+                else if (rect.tl().x + rect.width / 2 > 2 * frameSize.width / 3)
                     return "right";
                 else {
-                    if (rect.height * rect.width < (frameSize / 5) * (frameSize / 5))
+                    if (rect.height * rect.width < 210 * 210)
                         return "forward";
-                    else if (rect.height * rect.width > (1.2 * frameSize / 5) * (1.2 * frameSize / 5))
+                    else if (rect.height * rect.width > 240 * 240)
                         return "backward";
                     else
                         return "stop";
