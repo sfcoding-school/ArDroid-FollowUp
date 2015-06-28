@@ -73,10 +73,8 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
             }
         }
     };
-    private boolean useFD = false;
     private String currState = "null";
-    private Mat mRgba;
-    private FeatureScanner featureScanner;
+    private Mat mRgba, mGray;
     private CascadeFinder cascadeFinder;
 
     @Override
@@ -122,7 +120,6 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        featureScanner = new FeatureScanner(this.getApplicationContext());
         cascadeFinder = new CascadeFinder(this.getApplicationContext());
 
         mUsbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
@@ -134,7 +131,7 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
         setContentView(R.layout.activity_main);
 
         mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.cameraSurface);
-        //mOpenCvCameraView.setMaxFrameSize(1024, 768);
+        mOpenCvCameraView.setMaxFrameSize(800, 480);
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
         mOpenCvCameraView.setCvCameraViewListener(this);
     }
@@ -164,12 +161,9 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
 
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
         mRgba = inputFrame.rgba();
+        mGray = inputFrame.gray();
 
-        String newState;
-        if (useFD)
-            newState = featureScanner.doTheWork(mRgba);
-        else
-            newState = cascadeFinder.doTheWork(mRgba);
+        String newState = cascadeFinder.doTheWork(mRgba, mGray);
 
         if (!newState.equals(currState)) {
             currState = newState;
@@ -182,9 +176,11 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
 
     public void onCameraViewStarted(int width, int height) {
         mRgba = new Mat();
+        mGray = new Mat();
     }
 
     public void onCameraViewStopped() {
         mRgba.release();
+        mGray.release();
     }
 }

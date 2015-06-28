@@ -13,7 +13,6 @@ import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
-import org.opencv.core.Size;
 import org.opencv.features2d.DMatch;
 import org.opencv.features2d.DescriptorExtractor;
 import org.opencv.features2d.DescriptorMatcher;
@@ -40,7 +39,6 @@ public class FeatureScanner {
         try {
             mImage = Utils.loadResource(ctx, R.drawable.unipg);
             Imgproc.cvtColor(mImage, mImage, Imgproc.COLOR_RGBA2GRAY);
-            Imgproc.GaussianBlur(mImage, mImage, new Size(3, 3), 2);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -64,10 +62,7 @@ public class FeatureScanner {
         cornersImage.put(3, 0, new double[]{0, mImage.rows()});
     }
 
-    public String doTheWork(Mat mRgba) {
-        Mat mGray = new Mat();
-        Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGBA2GRAY);
-
+    public String doTheWork(Mat mRgba, Mat mGray) {
         MatOfKeyPoint frameKeypoints = new MatOfKeyPoint();
         Mat frameDescriptors = new Mat();
 
@@ -89,12 +84,12 @@ public class FeatureScanner {
                     goodMatches.add(matchesList.get(i).get(0));
             }
 
-            List<KeyPoint> objList = keypointsImage.toList();
-            List<KeyPoint> frameList = frameKeypoints.toList();
-            ArrayList<Point> objAux = new ArrayList<Point>();
-            ArrayList<Point> frameAux = new ArrayList<Point>();
+            if (goodMatches.size() >= 10) {
+                ArrayList<Point> objAux = new ArrayList<Point>();
+                ArrayList<Point> frameAux = new ArrayList<Point>();
+                List<KeyPoint> objList = keypointsImage.toList();
+                List<KeyPoint> frameList = frameKeypoints.toList();
 
-            if (goodMatches.size() >= 8) {
                 for (int i = 0; i < goodMatches.size(); i++) {
                     objAux.add(objList.get(goodMatches.get(i).queryIdx).pt);
                     frameAux.add(frameList.get(goodMatches.get(i).trainIdx).pt);
@@ -104,7 +99,7 @@ public class FeatureScanner {
                 objMat.fromList(objAux);
                 MatOfPoint2f frameMat = new MatOfPoint2f();
                 frameMat.fromList(frameAux);
-                Mat homography = Calib3d.findHomography(objMat, frameMat, Calib3d.RANSAC, 5);
+                Mat homography = Calib3d.findHomography(objMat, frameMat, Calib3d.RANSAC, 6);
 
                 Mat frameCorners = new Mat(4, 1, CvType.CV_32FC2);
                 Core.perspectiveTransform(cornersImage, frameCorners, homography);
@@ -142,9 +137,9 @@ public class FeatureScanner {
                 else if (rect.tl().x + rect.width / 2 > 2 * frameSize / 3)
                     return "right";
                 else {
-                    if (rect.height * rect.width < (frameSize / 5) * (frameSize / 5))
+                    if (rect.height * rect.width < 128 * 128)
                         return "forward";
-                    else if (rect.height * rect.width > (1.2 * frameSize / 5) * (1.2 * frameSize / 5))
+                    else if (rect.height * rect.width > 156 * 156)
                         return "backward";
                     else
                         return "stop";

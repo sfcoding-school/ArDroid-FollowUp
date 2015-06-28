@@ -8,7 +8,6 @@ import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
-import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 
 import java.io.File;
@@ -26,7 +25,7 @@ public class CascadeFinder {
         try {
             InputStream is = ctx.getResources().openRawResource(R.raw.unipg_cascade);
             File cascadeDir = ctx.getDir("cascade", Context.MODE_PRIVATE);
-            File file_classifier = new File(cascadeDir, "unipg_cascade.xml");
+            File file_classifier = new File(ctx.getDir("cascade", Context.MODE_PRIVATE), "unipg_cascade.xml");
             FileOutputStream os = new FileOutputStream(file_classifier);
 
             byte[] buffer = new byte[4096];
@@ -48,10 +47,7 @@ public class CascadeFinder {
         }
     }
 
-    public String doTheWork(Mat mRgba) {
-        Mat mGray = new Mat();
-        Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGBA2GRAY);
-
+    public String doTheWork(Mat mRgba, Mat mGray) {
         if (mAbsoluteFaceSize == 0)
             mAbsoluteFaceSize = Math.round(mGray.rows() * 0.2f) > 0 ? Math.round(mGray.rows() * 0.2f) : 0;
 
@@ -59,28 +55,28 @@ public class CascadeFinder {
         if (mCascadeClassifier != null)
             mCascadeClassifier.detectMultiScale(mGray, logos, 1.1, 2, 2, new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
 
-        if (!(logos.empty())) {
-            Rect[] facesArray = logos.toArray();
+        if (!logos.empty()) {
+            Rect[] logosArray = logos.toArray();
 
             Rect rect = new Rect(0, 0, 1, 1);
-            for (Rect aFacesArray : facesArray) {
-                if (aFacesArray.width * aFacesArray.height > rect.width * rect.height) {
-                    rect = aFacesArray;
+            for (Rect l : logosArray) {
+                if (l.width * l.height > rect.width * rect.height) {
+                    rect = l;
                 }
             }
 
             double frameSize = mGray.size().width;
 
-            Core.rectangle(mRgba, rect.tl(), rect.br(), new Scalar(0, 255, 0, 255), 3);
+            Core.rectangle(mRgba, rect.tl(), rect.br(), new Scalar(0, 255, 0), 3);
 
             if (rect.tl().x + rect.width / 2 < frameSize / 3)
                 return "left";
             else if (rect.tl().x + rect.width / 2 > 2 * frameSize / 3)
                 return "right";
             else {
-                if (rect.height * rect.width < (frameSize / 5) * (frameSize / 5))
+                if (rect.height * rect.width < 128 * 128)
                     return "forward";
-                else if (rect.height * rect.width > (1.2 * frameSize / 5) * (1.2 * frameSize / 5))
+                else if (rect.height * rect.width > 156 * 156)
                     return "backward";
                 else
                     return "stop";
