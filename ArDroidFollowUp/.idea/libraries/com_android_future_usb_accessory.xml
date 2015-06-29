@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="com.android.future.usb.accessory">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/libs/com.android.future.usb.accessory.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

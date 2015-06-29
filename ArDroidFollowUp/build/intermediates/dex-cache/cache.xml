@@ -2,13 +2,6 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\Jacopo\AndroidStudioProjects\ArDroidFollowUp\app\build\intermediates\exploded-aar\ArDroidFollowUp\OpenCV\unspecified\jars\classes.jar"
-        jumboMode="false"
-        revision="19.1.0"
-        sha1="22211e1c1ddd512f6490756edb10c5f5f19d7ff7">
-        <dex dex="C:\Users\Jacopo\AndroidStudioProjects\ArDroidFollowUp\app\build\intermediates\pre-dexed\debug\classes-f10e016bfc1c5e8b857bb5fc7d933be3b77e04e6.jar" />
-    </item>
-    <item
         jar="C:\Users\Jacopo\AndroidStudioProjects\ArDroidFollowUp\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\19.1.0\jars\classes.jar"
         jumboMode="false"
         revision="19.1.0"
@@ -18,8 +11,8 @@
     <item
         jar="C:\Users\Jacopo\AndroidStudioProjects\ArDroidFollowUp\app\build\intermediates\exploded-aar\ArDroidFollowUp\OpenCV\unspecified\jars\classes.jar"
         jumboMode="false"
-        revision="22.0.0"
-        sha1="0bc0e84d6f90e57a1fa721bf289ab9b6407ce1ef">
+        revision="19.1.0"
+        sha1="7f7f8c0c247e76c849166d3dd64af95e68530bc7">
         <dex dex="C:\Users\Jacopo\AndroidStudioProjects\ArDroidFollowUp\app\build\intermediates\pre-dexed\debug\classes-f10e016bfc1c5e8b857bb5fc7d933be3b77e04e6.jar" />
     </item>
     <item
@@ -28,6 +21,13 @@
         revision="19.1.0"
         sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67">
         <dex dex="C:\Users\Jacopo\AndroidStudioProjects\ArDroidFollowUp\app\build\intermediates\pre-dexed\debug\support-v4-19.1.0-ed2b4ae61bf3ce6f9a8398fdf69e426d4c3267ef.jar" />
+    </item>
+    <item
+        jar="C:\Users\Jacopo\AndroidStudioProjects\ArDroidFollowUp\app\build\intermediates\exploded-aar\ArDroidFollowUp\OpenCV\unspecified\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="0bc0e84d6f90e57a1fa721bf289ab9b6407ce1ef">
+        <dex dex="C:\Users\Jacopo\AndroidStudioProjects\ArDroidFollowUp\app\build\intermediates\pre-dexed\debug\classes-f10e016bfc1c5e8b857bb5fc7d933be3b77e04e6.jar" />
     </item>
 
 </items>

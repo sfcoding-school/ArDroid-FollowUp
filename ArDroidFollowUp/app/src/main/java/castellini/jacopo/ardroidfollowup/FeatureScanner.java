@@ -104,10 +104,10 @@ public class FeatureScanner {
                 Mat frameCorners = new Mat(4, 1, CvType.CV_32FC2);
                 Core.perspectiveTransform(cornersImage, frameCorners, homography);
 
-                /*Core.line(mRgba, new Point(frameCorners.get(0, 0)), new Point(frameCorners.get(1, 0)), new Scalar(0, 255, 0), 3);
+                Core.line(mRgba, new Point(frameCorners.get(0, 0)), new Point(frameCorners.get(1, 0)), new Scalar(0, 255, 0), 3);
                 Core.line(mRgba, new Point(frameCorners.get(1, 0)), new Point(frameCorners.get(2, 0)), new Scalar(0, 255, 0), 3);
                 Core.line(mRgba, new Point(frameCorners.get(2, 0)), new Point(frameCorners.get(3, 0)), new Scalar(0, 255, 0), 3);
-                Core.line(mRgba, new Point(frameCorners.get(3, 0)), new Point(frameCorners.get(0, 0)), new Scalar(0, 255, 0), 3);*/
+                Core.line(mRgba, new Point(frameCorners.get(3, 0)), new Point(frameCorners.get(0, 0)), new Scalar(0, 255, 0), 3);
 
                 Point temp = new Point(frameCorners.get(0, 0));
                 int maxX = (int) temp.x;
@@ -130,8 +130,6 @@ public class FeatureScanner {
                 double frameSize = mGray.size().width;
                 Rect rect = new Rect(new Point(minX, minY), new Point(maxX, maxY));
 
-                Core.rectangle(mRgba, rect.tl(), rect.br(), new Scalar(255, 0, 0), 3);
-
                 if (rect.tl().x + rect.width / 2 < frameSize / 3)
                     return "left";
                 else if (rect.tl().x + rect.width / 2 > 2 * frameSize / 3)
@@ -139,7 +137,7 @@ public class FeatureScanner {
                 else {
                     if (rect.height * rect.width < 128 * 128)
                         return "forward";
-                    else if (rect.height * rect.width > 156 * 156)
+                    else if (rect.height * rect.width > 178 * 178)
                         return "backward";
                     else
                         return "stop";
