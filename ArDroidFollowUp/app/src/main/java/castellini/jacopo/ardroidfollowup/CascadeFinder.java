@@ -76,7 +76,7 @@ public class CascadeFinder {
             else {
                 if (rect.height * rect.width < 128 * 128)
                     return "forward";
-                else if (rect.height * rect.width > 178 * 178)
+                else if (rect.height * rect.width > 148 * 148)
                     return "backward";
                 else
                     return "stop";

@@ -24,9 +24,9 @@ public class ArduThread extends Thread {
         if (command.equals("stop"))
             buffer = "0V;".getBytes();
         else if (command.equals("left"))
-            buffer = "0V;1V1;2A0;2B3;".getBytes();
+            buffer = "0V;1V1;2A2;2B3;".getBytes();
         else if (command.equals("right"))
-            buffer = "0V;1V1;2A3;2B0;".getBytes();
+            buffer = "0V;1V1;2A3;2B2;".getBytes();
         else if (command.equals("forward"))
             buffer = "0V;1V0;2V3;".getBytes();
         else if (command.equals("backward"))

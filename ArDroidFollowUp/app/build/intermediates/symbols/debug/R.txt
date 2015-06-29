@@ -330,7 +330,6 @@ int layout activity_main 0x7f040018
 int layout support_simple_spinner_dropdown_item 0x7f040019
 int mipmap ic_launcher 0x7f030000
 int raw unipg_cascade 0x7f070000
-int raw unipg_cascade_old 0x7f070001
 int string abc_action_bar_home_description 0x7f080000
 int string abc_action_bar_up_description 0x7f080001
 int string abc_action_menu_overflow_description 0x7f080002

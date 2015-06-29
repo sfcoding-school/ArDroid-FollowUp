@@ -943,7 +943,6 @@ containing a value of this type.
     }
     public static final class raw {
         public static final int unipg_cascade=0x7f070000;
-        public static final int unipg_cascade_old=0x7f070001;
     }
     public static final class string {
         public static final int abc_action_bar_home_description=0x7f080000;
