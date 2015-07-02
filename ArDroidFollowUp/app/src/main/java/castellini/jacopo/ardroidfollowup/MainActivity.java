@@ -131,7 +131,6 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
         setContentView(R.layout.activity_main);
 
         mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.cameraSurface);
-        mOpenCvCameraView.setMaxFrameSize(800, 480);
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
         mOpenCvCameraView.setCvCameraViewListener(this);
     }
