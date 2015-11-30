@@ -1,5 +1,5 @@
 # ArDroid FollowUp
-## [Artificial Intelligence] Object tracking with OpenCV on Android and follower robot with Arduino
+## Object tracking with OpenCV on Android and follower robot with Arduino
 
 ### Overview
 This is made for a university project. Below is the assigment text (in italian).
