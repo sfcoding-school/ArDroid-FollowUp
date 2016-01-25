@@ -2,7 +2,7 @@
 ## Object tracking with OpenCV on Android and follower robot with Arduino
 
 ### Overview
-This is made for a university project. Below is the assigment text (in italian).
+This is made for a university project. Below there is the full text of the assigment (in italian).
 
 **Scenario**: Il robot si muove in una scena “guardando” verso l’alto: se individua un simbolo dato su una maglietta o su una persona (anche in forma di cartello), che può essere una forma di un colore particolare (che non si confonda con altri che possono essere sulla scena), un QR code, o una faccia stampata, si dirige verso di esso, in modo da inquadrarla frontalmente alla massima risoluzione e seguire la persona che indossa la maglietta/cartello per i corridoi del dipartimento.
   
